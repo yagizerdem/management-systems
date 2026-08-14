@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace BilgeHotel.Domain.Pricing;
 
 public class Package
 {
-    public int Id { get; set; }
+    [Key]
+    public Guid Id { get; set; }
 
     public string Name { get; set; } = null!;
     public string? Description { get; set; }

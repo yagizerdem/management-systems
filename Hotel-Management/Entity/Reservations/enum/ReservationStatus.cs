@@ -1,4 +1,3 @@
-namespace BilgeHotel.Domain.Reservations;
 
 public enum ReservationStatus
 {

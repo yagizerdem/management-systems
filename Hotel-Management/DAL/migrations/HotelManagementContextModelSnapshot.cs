@@ -24,11 +24,9 @@ namespace DAL.migrations
 
             modelBuilder.Entity("BilgeHotel.Domain.Customers.Customer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
@@ -62,16 +60,158 @@ namespace DAL.migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customer");
+                    b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("BilgeHotel.Domain.Employees.Department", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("BilgeHotel.Domain.Employees.Employee", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("DepartmentId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("HireDate")
+                        .HasColumnType("date");
+
+                    b.Property<decimal?>("HourlyRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("MonthlySalary")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SalaryType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId1");
+
+                    b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("BilgeHotel.Domain.Employees.EmployeeShift", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("EmployeeId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId1");
+
+                    b.ToTable("EmployeeShifts");
+                });
+
+            modelBuilder.Entity("BilgeHotel.Domain.Employees.OvertimeRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("EmployeeId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId1");
+
+                    b.ToTable("OvertimeRecords");
+                });
+
+            modelBuilder.Entity("BilgeHotel.Domain.Pricing.ExchangeRate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("BuyingRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CurrencyCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<decimal>("SellingRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExchangeRates");
                 });
 
             modelBuilder.Entity("BilgeHotel.Domain.Pricing.Package", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -85,16 +225,14 @@ namespace DAL.migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Package");
+                    b.ToTable("Packages");
                 });
 
             modelBuilder.Entity("BilgeHotel.Domain.Pricing.RoomRate", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CurrencyCode")
                         .IsRequired()
@@ -105,6 +243,9 @@ namespace DAL.migrations
 
                     b.Property<int>("PackageId")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("PackageId1")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("PricePerNight")
                         .HasColumnType("decimal(18,2)");
@@ -120,11 +261,11 @@ namespace DAL.migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PackageId");
+                    b.HasIndex("PackageId1");
 
                     b.HasIndex("RoomTypeId1");
 
-                    b.ToTable("RoomRate");
+                    b.ToTable("RoomRates");
                 });
 
             modelBuilder.Entity("BilgeHotel.Domain.Reservations.ExtraCharge", b =>
@@ -151,20 +292,21 @@ namespace DAL.migrations
                     b.Property<long>("ReservationId")
                         .HasColumnType("bigint");
 
+                    b.Property<Guid>("ReservationId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ReservationId");
+                    b.HasIndex("ReservationId1");
 
-                    b.ToTable("ExtraCharge");
+                    b.ToTable("ExtraCharges");
                 });
 
             modelBuilder.Entity("BilgeHotel.Domain.Reservations.Reservation", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("BasePrice")
                         .HasColumnType("decimal(18,2)");
@@ -194,11 +336,17 @@ namespace DAL.migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("CustomerId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("DiscountAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("PackageId")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("PackageId1")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ReservationNumber")
                         .IsRequired()
@@ -218,13 +366,13 @@ namespace DAL.migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerId1");
 
-                    b.HasIndex("PackageId");
+                    b.HasIndex("PackageId1");
 
                     b.HasIndex("RoomId1");
 
-                    b.ToTable("Reservation");
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("BilgeHotel.Domain.Rooms.Amenity", b =>
@@ -239,7 +387,7 @@ namespace DAL.migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Amenity");
+                    b.ToTable("Amenities");
                 });
 
             modelBuilder.Entity("BilgeHotel.Domain.Rooms.Room", b =>
@@ -357,11 +505,44 @@ namespace DAL.migrations
                     b.ToTable("RoomTypes");
                 });
 
+            modelBuilder.Entity("BilgeHotel.Domain.Employees.Employee", b =>
+                {
+                    b.HasOne("BilgeHotel.Domain.Employees.Department", "Department")
+                        .WithMany("Employees")
+                        .HasForeignKey("DepartmentId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("BilgeHotel.Domain.Employees.EmployeeShift", b =>
+                {
+                    b.HasOne("BilgeHotel.Domain.Employees.Employee", "Employee")
+                        .WithMany("Shifts")
+                        .HasForeignKey("EmployeeId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("BilgeHotel.Domain.Employees.OvertimeRecord", b =>
+                {
+                    b.HasOne("BilgeHotel.Domain.Employees.Employee", "Employee")
+                        .WithMany("OvertimeRecords")
+                        .HasForeignKey("EmployeeId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("BilgeHotel.Domain.Pricing.RoomRate", b =>
                 {
                     b.HasOne("BilgeHotel.Domain.Pricing.Package", "Package")
                         .WithMany("RoomRates")
-                        .HasForeignKey("PackageId")
+                        .HasForeignKey("PackageId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -380,7 +561,7 @@ namespace DAL.migrations
                 {
                     b.HasOne("BilgeHotel.Domain.Reservations.Reservation", "Reservation")
                         .WithMany("ExtraCharges")
-                        .HasForeignKey("ReservationId")
+                        .HasForeignKey("ReservationId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -391,13 +572,13 @@ namespace DAL.migrations
                 {
                     b.HasOne("BilgeHotel.Domain.Customers.Customer", "Customer")
                         .WithMany("Reservations")
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("CustomerId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BilgeHotel.Domain.Pricing.Package", "Package")
                         .WithMany()
-                        .HasForeignKey("PackageId")
+                        .HasForeignKey("PackageId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -458,6 +639,18 @@ namespace DAL.migrations
             modelBuilder.Entity("BilgeHotel.Domain.Customers.Customer", b =>
                 {
                     b.Navigation("Reservations");
+                });
+
+            modelBuilder.Entity("BilgeHotel.Domain.Employees.Department", b =>
+                {
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("BilgeHotel.Domain.Employees.Employee", b =>
+                {
+                    b.Navigation("OvertimeRecords");
+
+                    b.Navigation("Shifts");
                 });
 
             modelBuilder.Entity("BilgeHotel.Domain.Pricing.Package", b =>

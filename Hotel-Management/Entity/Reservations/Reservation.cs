@@ -1,12 +1,14 @@
 using BilgeHotel.Domain.Customers;
 using BilgeHotel.Domain.Pricing;
 using BilgeHotel.Domain.Rooms;
+using System.ComponentModel.DataAnnotations;
 
 namespace BilgeHotel.Domain.Reservations;
 
 public class Reservation
 {
-    public long Id { get; set; }
+    [Key]
+    public Guid Id { get; set; }
 
     public string ReservationNumber { get; set; } = null!;
 

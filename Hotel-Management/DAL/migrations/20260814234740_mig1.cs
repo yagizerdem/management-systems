@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.migrations
 {
     /// <inheritdoc />
-    public partial class roommodels : Migration
+    public partial class mig1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Amenity",
+                name: "Amenities",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -20,15 +20,14 @@ namespace DAL.migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Amenity", x => x.Id);
+                    table.PrimaryKey("PK_Amenities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customer",
+                name: "Customers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NationalIdentityNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -41,22 +40,48 @@ namespace DAL.migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customer", x => x.Id);
+                    table.PrimaryKey("PK_Customers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Package",
+                name: "Departments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Departments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ExchangeRates",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CurrencyCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BuyingRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    SellingRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExchangeRates", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Packages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Package", x => x.Id);
+                    table.PrimaryKey("PK_Packages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -76,14 +101,42 @@ namespace DAL.migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoomRate",
+                name: "Employees",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DepartmentId = table.Column<int>(type: "int", nullable: false),
+                    DepartmentId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SalaryType = table.Column<int>(type: "int", nullable: false),
+                    HourlyRate = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    MonthlySalary = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    HireDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Employees_Departments_DepartmentId1",
+                        column: x => x.DepartmentId1,
+                        principalTable: "Departments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoomRates",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RoomTypeId = table.Column<int>(type: "int", nullable: false),
                     RoomTypeId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PackageId = table.Column<int>(type: "int", nullable: false),
+                    PackageId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: false),
                     PricePerNight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -91,15 +144,15 @@ namespace DAL.migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoomRate", x => x.Id);
+                    table.PrimaryKey("PK_RoomRates", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RoomRate_Package_PackageId",
-                        column: x => x.PackageId,
-                        principalTable: "Package",
+                        name: "FK_RoomRates_Packages_PackageId1",
+                        column: x => x.PackageId1,
+                        principalTable: "Packages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RoomRate_RoomTypes_RoomTypeId1",
+                        name: "FK_RoomRates_RoomTypes_RoomTypeId1",
                         column: x => x.RoomTypeId1,
                         principalTable: "RoomTypes",
                         principalColumn: "Id",
@@ -129,16 +182,61 @@ namespace DAL.migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reservation",
+                name: "EmployeeShifts",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeShifts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmployeeShifts_Employees_EmployeeId1",
+                        column: x => x.EmployeeId1,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OvertimeRecords",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OvertimeRecords", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OvertimeRecords_Employees_EmployeeId1",
+                        column: x => x.EmployeeId1,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reservations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ReservationNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RoomId = table.Column<int>(type: "int", nullable: false),
                     RoomId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PackageId = table.Column<int>(type: "int", nullable: false),
+                    PackageId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CheckInDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
@@ -153,21 +251,21 @@ namespace DAL.migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reservation", x => x.Id);
+                    table.PrimaryKey("PK_Reservations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reservation_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
+                        name: "FK_Reservations_Customers_CustomerId1",
+                        column: x => x.CustomerId1,
+                        principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reservation_Package_PackageId",
-                        column: x => x.PackageId,
-                        principalTable: "Package",
+                        name: "FK_Reservations_Packages_PackageId1",
+                        column: x => x.PackageId1,
+                        principalTable: "Packages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reservation_Rooms_RoomId1",
+                        name: "FK_Reservations_Rooms_RoomId1",
                         column: x => x.RoomId1,
                         principalTable: "Rooms",
                         principalColumn: "Id",
@@ -187,9 +285,9 @@ namespace DAL.migrations
                 {
                     table.PrimaryKey("PK_RoomAmenities", x => x.RoomId);
                     table.ForeignKey(
-                        name: "FK_RoomAmenities_Amenity_AmenityId1",
+                        name: "FK_RoomAmenities_Amenities_AmenityId1",
                         column: x => x.AmenityId1,
-                        principalTable: "Amenity",
+                        principalTable: "Amenities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -225,12 +323,13 @@ namespace DAL.migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExtraCharge",
+                name: "ExtraCharges",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ReservationId = table.Column<long>(type: "bigint", nullable: false),
+                    ReservationId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
@@ -238,33 +337,48 @@ namespace DAL.migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExtraCharge", x => x.Id);
+                    table.PrimaryKey("PK_ExtraCharges", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ExtraCharge_Reservation_ReservationId",
-                        column: x => x.ReservationId,
-                        principalTable: "Reservation",
+                        name: "FK_ExtraCharges_Reservations_ReservationId1",
+                        column: x => x.ReservationId1,
+                        principalTable: "Reservations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExtraCharge_ReservationId",
-                table: "ExtraCharge",
-                column: "ReservationId");
+                name: "IX_Employees_DepartmentId1",
+                table: "Employees",
+                column: "DepartmentId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservation_CustomerId",
-                table: "Reservation",
-                column: "CustomerId");
+                name: "IX_EmployeeShifts_EmployeeId1",
+                table: "EmployeeShifts",
+                column: "EmployeeId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservation_PackageId",
-                table: "Reservation",
-                column: "PackageId");
+                name: "IX_ExtraCharges_ReservationId1",
+                table: "ExtraCharges",
+                column: "ReservationId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservation_RoomId1",
-                table: "Reservation",
+                name: "IX_OvertimeRecords_EmployeeId1",
+                table: "OvertimeRecords",
+                column: "EmployeeId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservations_CustomerId1",
+                table: "Reservations",
+                column: "CustomerId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservations_PackageId1",
+                table: "Reservations",
+                column: "PackageId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservations_RoomId1",
+                table: "Reservations",
                 column: "RoomId1");
 
             migrationBuilder.CreateIndex(
@@ -283,13 +397,13 @@ namespace DAL.migrations
                 column: "RoomId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoomRate_PackageId",
-                table: "RoomRate",
-                column: "PackageId");
+                name: "IX_RoomRates_PackageId1",
+                table: "RoomRates",
+                column: "PackageId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoomRate_RoomTypeId1",
-                table: "RoomRate",
+                name: "IX_RoomRates_RoomTypeId1",
+                table: "RoomRates",
                 column: "RoomTypeId1");
 
             migrationBuilder.CreateIndex(
@@ -302,7 +416,16 @@ namespace DAL.migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ExtraCharge");
+                name: "EmployeeShifts");
+
+            migrationBuilder.DropTable(
+                name: "ExchangeRates");
+
+            migrationBuilder.DropTable(
+                name: "ExtraCharges");
+
+            migrationBuilder.DropTable(
+                name: "OvertimeRecords");
 
             migrationBuilder.DropTable(
                 name: "RoomAmenities");
@@ -311,22 +434,28 @@ namespace DAL.migrations
                 name: "RoomBlocks");
 
             migrationBuilder.DropTable(
-                name: "RoomRate");
+                name: "RoomRates");
 
             migrationBuilder.DropTable(
-                name: "Reservation");
+                name: "Reservations");
 
             migrationBuilder.DropTable(
-                name: "Amenity");
+                name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "Customer");
+                name: "Amenities");
 
             migrationBuilder.DropTable(
-                name: "Package");
+                name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "Packages");
 
             migrationBuilder.DropTable(
                 name: "Rooms");
+
+            migrationBuilder.DropTable(
+                name: "Departments");
 
             migrationBuilder.DropTable(
                 name: "RoomTypes");

@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace BilgeHotel.Domain.Employees;
 
 public class EmployeeShift
 {
-    public long Id { get; set; }
+    [Key]
+    public Guid Id { get; set; }
 
     public int EmployeeId { get; set; }
     public Employee Employee { get; set; } = null!;
