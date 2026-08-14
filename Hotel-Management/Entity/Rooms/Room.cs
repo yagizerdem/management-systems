@@ -1,10 +1,12 @@
 using BilgeHotel.Domain.Reservations;
+using System.ComponentModel.DataAnnotations;
 
 namespace BilgeHotel.Domain.Rooms;
 
 public class Room
 {
-    public int Id { get; set; }
+    [Key]
+    public Guid Id { get; set; }
 
     public string RoomNumber { get; set; } = null!;
     public int Floor { get; set; }

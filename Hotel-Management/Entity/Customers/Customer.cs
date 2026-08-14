@@ -1,9 +1,11 @@
 using BilgeHotel.Domain.Reservations;
+using System.ComponentModel.DataAnnotations;
 
 namespace BilgeHotel.Domain.Customers;
 
 public class Customer
 {
+    [Key]
     public int Id { get; set; }
 
     public string FirstName { get; set; } = null!;

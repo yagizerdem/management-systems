@@ -30,7 +30,7 @@ Generate Conventional Commit messages for this monorepo.
 
 - Output only the commit message.
 - Format: `type(scope): description`
-- Scope must be `web`, `engine`, or `packages`.
+- Scope must be `hotel-management`.
 - Use only the commit types listed above.
 - Keep the description concise and specific.
 - Include the task/code prefix when provided.

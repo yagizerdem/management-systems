@@ -1,4 +1,4 @@
-namespace BilgeHotel.Domain.Rooms;
+namespace Entity.Rooms.@enum;
 
 public enum RoomBlockType
 {

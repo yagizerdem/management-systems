@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace BilgeHotel.Domain.Reservations;
 
 public class ExtraCharge
 {
+    [Key]
     public long Id { get; set; }
 
     public long ReservationId { get; set; }
