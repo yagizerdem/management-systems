@@ -2,7 +2,7 @@
 
 ## Skill: Commit Message Generator
 
-Generate Conventional Commit messages for this monorepo.
+Generate Conventional Commit messages for this repo.
 
 ### Commit Types
 
