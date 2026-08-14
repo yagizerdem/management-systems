@@ -1,3 +1,8 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="AGENTS.md" />
+  </Folder>
+  <Project Path="DAL/DAL.csproj" Id="413e8c29-9317-482b-b861-48c253cf6eb1" />
+  <Project Path="Entity/Entity.csproj" Id="0248d4a5-c51d-4b58-a184-45a0df823afd" />
   <Project Path="Hotel-Management/Hotel-Management.csproj" />
 </Solution>

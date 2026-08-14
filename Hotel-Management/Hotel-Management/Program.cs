@@ -10,7 +10,6 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-var app = builder.Build();
 
 if (builder.Environment.IsDevelopment())
 {
@@ -30,6 +29,10 @@ else
     builder.Services.AddDbContextPool<HotelManagementContext>(options =>
         options.UseSqlServer(conString));
 }
+
+
+var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

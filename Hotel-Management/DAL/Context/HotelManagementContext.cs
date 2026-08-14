@@ -6,6 +6,9 @@ namespace DAL.Context
     public sealed class HotelManagementContext : DbContext
     {
 
+        public HotelManagementContext(DbContextOptions<HotelManagementContext> options) : base(options)
+        { }
+
         // rooms 
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Amenity> Amenity { get; set; }
@@ -17,11 +20,6 @@ namespace DAL.Context
         public DbSet<RoomType> RoomTypes { get; set; }
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(
-                @"Server=(localdb)\mssqllocaldb;Database=Blogging;Trusted_Connection=True;ConnectRetryCount=0");
-        }
 
     }
 }
