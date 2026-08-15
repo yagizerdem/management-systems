@@ -11,13 +11,13 @@ public class Reservation : BaseEntity
 {
     public string ReservationNumber { get; set; } = null!;
 
-    public int CustomerId { get; set; }
+    public Guid CustomerId { get; set; }
     public Customer Customer { get; set; } = null!;
 
-    public int RoomId { get; set; }
+    public Guid RoomId { get; set; }
     public Room Room { get; set; } = null!;
 
-    public int PackageId { get; set; }
+    public Guid PackageId { get; set; }
     public Package Package { get; set; } = null!;
 
     public DateTime CheckInDate { get; set; }

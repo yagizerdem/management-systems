@@ -7,7 +7,7 @@ namespace Entity.Employees;
 public class EmployeeShift : BaseEntity
 {
 
-    public int EmployeeId { get; set; }
+    public Guid EmployeeId { get; set; }
     public Employee Employee { get; set; } = null!;
 
     public DateTime StartTime { get; set; }

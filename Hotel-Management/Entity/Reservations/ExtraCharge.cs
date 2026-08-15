@@ -3,7 +3,7 @@ using Entity.Base;
 
 public class ExtraCharge : BaseEntity
 {
-    public long ReservationId { get; set; }
+    public Guid ReservationId { get; set; }
     public Reservation Reservation { get; set; } = null!;
 
     public string Description { get; set; } = null!;

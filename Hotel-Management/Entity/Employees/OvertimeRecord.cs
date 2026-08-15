@@ -5,7 +5,7 @@ namespace Entity.Employees;
 
 public class OvertimeRecord : BaseEntity
 {
-    public int EmployeeId { get; set; }
+    public Guid EmployeeId { get; set; }
     public Employee Employee { get; set; } = null!;
 
     public DateTime StartTime { get; set; }

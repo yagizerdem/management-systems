@@ -38,19 +38,16 @@ namespace DAL.migrations
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
 
-                    b.Property<int>("PackageId")
+                    b.Property<int>("EntityStatus")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("PackageId1")
+                    b.Property<Guid>("PackageId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("PricePerNight")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("RoomTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("RoomTypeId1")
+                    b.Property<Guid>("RoomTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateOnly>("StartDate")
@@ -61,9 +58,9 @@ namespace DAL.migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PackageId1");
+                    b.HasIndex("PackageId");
 
-                    b.HasIndex("RoomTypeId1");
+                    b.HasIndex("RoomTypeId");
 
                     b.ToTable("RoomRates");
                 });
@@ -76,6 +73,9 @@ namespace DAL.migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -98,14 +98,14 @@ namespace DAL.migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("EmployeeId1")
+                    b.Property<Guid>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
@@ -118,7 +118,7 @@ namespace DAL.migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId1");
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("EmployeeShifts");
                 });
@@ -132,14 +132,14 @@ namespace DAL.migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("EmployeeId1")
+                    b.Property<Guid>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");
@@ -152,7 +152,7 @@ namespace DAL.migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId1");
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("OvertimeRecords");
                 });
@@ -187,6 +187,9 @@ namespace DAL.migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -268,6 +271,9 @@ namespace DAL.migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("SellingRate")
                         .HasColumnType("decimal(18,2)");
 
@@ -290,6 +296,9 @@ namespace DAL.migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -325,13 +334,13 @@ namespace DAL.migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("int");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<long>("ReservationId")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("ReservationId1")
+                    b.Property<Guid>("ReservationId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -339,7 +348,7 @@ namespace DAL.migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReservationId1");
+                    b.HasIndex("ReservationId");
 
                     b.ToTable("ExtraCharges");
                 });
@@ -375,29 +384,23 @@ namespace DAL.migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("CustomerId1")
+                    b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("DiscountAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("PackageId")
+                    b.Property<int>("EntityStatus")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("PackageId1")
+                    b.Property<Guid>("PackageId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ReservationNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoomId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("RoomId1")
+                    b.Property<Guid>("RoomId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Status")
@@ -411,11 +414,11 @@ namespace DAL.migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId1");
+                    b.HasIndex("CustomerId");
 
-                    b.HasIndex("PackageId1");
+                    b.HasIndex("PackageId");
 
-                    b.HasIndex("RoomId1");
+                    b.HasIndex("RoomId");
 
                     b.ToTable("Reservations");
                 });
@@ -428,6 +431,9 @@ namespace DAL.migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -450,6 +456,9 @@ namespace DAL.migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("int");
+
                     b.Property<int>("Floor")
                         .HasColumnType("int");
 
@@ -460,10 +469,7 @@ namespace DAL.migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoomTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("RoomTypeId1")
+                    b.Property<Guid>("RoomTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -471,7 +477,7 @@ namespace DAL.migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoomTypeId1");
+                    b.HasIndex("RoomTypeId");
 
                     b.ToTable("Rooms");
                 });
@@ -482,14 +488,14 @@ namespace DAL.migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AmenityId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("AmenityId1")
+                    b.Property<Guid>("AmenityId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("RoomId")
                         .HasColumnType("uniqueidentifier");
@@ -499,7 +505,7 @@ namespace DAL.migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AmenityId1");
+                    b.HasIndex("AmenityId");
 
                     b.HasIndex("RoomId");
 
@@ -518,14 +524,14 @@ namespace DAL.migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("int");
+
                     b.Property<string>("Reason")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoomId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("RoomId1")
+                    b.Property<Guid>("RoomId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("StartDate")
@@ -539,7 +545,7 @@ namespace DAL.migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoomId1");
+                    b.HasIndex("RoomId");
 
                     b.ToTable("RoomBlocks");
                 });
@@ -560,6 +566,9 @@ namespace DAL.migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DoubleBedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EntityStatus")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -740,10 +749,7 @@ namespace DAL.migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("DepartmentId1")
+                    b.Property<Guid>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateOnly>("HireDate")
@@ -761,7 +767,7 @@ namespace DAL.migrations
                     b.Property<int>("SalaryType")
                         .HasColumnType("int");
 
-                    b.HasIndex("DepartmentId1");
+                    b.HasIndex("DepartmentId");
 
                     b.HasDiscriminator().HasValue("Employee");
                 });
@@ -770,13 +776,13 @@ namespace DAL.migrations
                 {
                     b.HasOne("Entity.Pricing.Package", "Package")
                         .WithMany("RoomRates")
-                        .HasForeignKey("PackageId1")
+                        .HasForeignKey("PackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entity.Rooms.RoomType", "RoomType")
                         .WithMany()
-                        .HasForeignKey("RoomTypeId1")
+                        .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -789,7 +795,7 @@ namespace DAL.migrations
                 {
                     b.HasOne("Entity.Employees.Employee", "Employee")
                         .WithMany("Shifts")
-                        .HasForeignKey("EmployeeId1")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -800,7 +806,7 @@ namespace DAL.migrations
                 {
                     b.HasOne("Entity.Employees.Employee", "Employee")
                         .WithMany("OvertimeRecords")
-                        .HasForeignKey("EmployeeId1")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -811,7 +817,7 @@ namespace DAL.migrations
                 {
                     b.HasOne("Entity.Reservations.Reservation", "Reservation")
                         .WithMany("ExtraCharges")
-                        .HasForeignKey("ReservationId1")
+                        .HasForeignKey("ReservationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -822,19 +828,19 @@ namespace DAL.migrations
                 {
                     b.HasOne("Entity.Customers.Customer", "Customer")
                         .WithMany("Reservations")
-                        .HasForeignKey("CustomerId1")
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entity.Pricing.Package", "Package")
                         .WithMany()
-                        .HasForeignKey("PackageId1")
+                        .HasForeignKey("PackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entity.Rooms.Room", "Room")
                         .WithMany("Reservations")
-                        .HasForeignKey("RoomId1")
+                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -849,7 +855,7 @@ namespace DAL.migrations
                 {
                     b.HasOne("Entity.Rooms.RoomType", "RoomType")
                         .WithMany("Rooms")
-                        .HasForeignKey("RoomTypeId1")
+                        .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -860,7 +866,7 @@ namespace DAL.migrations
                 {
                     b.HasOne("Entity.Rooms.Amenity", "Amenity")
                         .WithMany("Rooms")
-                        .HasForeignKey("AmenityId1")
+                        .HasForeignKey("AmenityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -879,7 +885,7 @@ namespace DAL.migrations
                 {
                     b.HasOne("Entity.Rooms.Room", "Room")
                         .WithMany("Blocks")
-                        .HasForeignKey("RoomId1")
+                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -941,7 +947,7 @@ namespace DAL.migrations
                 {
                     b.HasOne("Entity.Employees.Department", "Department")
                         .WithMany("Employees")
-                        .HasForeignKey("DepartmentId1")
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
