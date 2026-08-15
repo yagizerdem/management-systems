@@ -7,7 +7,7 @@ public class Employee : AppUser
 {
     public string? Address { get; set; }
 
-    public int DepartmentId { get; set; }
+    public Guid DepartmentId { get; set; }
     public Department Department { get; set; } = null!;
 
     public SalaryType SalaryType { get; set; }

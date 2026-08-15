@@ -6,10 +6,10 @@ namespace BilgeHotel.Domain.Pricing;
 
 public class RoomRate : BaseEntity
 {
-    public int RoomTypeId { get; set; }
+    public Guid RoomTypeId { get; set; }
     public RoomType RoomType { get; set; } = null!;
 
-    public int PackageId { get; set; }
+    public Guid PackageId { get; set; }
     public Package Package { get; set; } = null!;
 
     public DateOnly StartDate { get; set; }
