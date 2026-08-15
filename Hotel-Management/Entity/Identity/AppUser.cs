@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Entity.Base;
+using Microsoft.AspNetCore.Identity;
 
 namespace Entity.Identity;
 
-public class AppUser : IdentityUser<Guid>
+public class AppUser : IdentityUser<Guid>, IBaseEntity
 {
 
     public string FirstName { get; set; } = null!;
@@ -16,4 +17,6 @@ public class AppUser : IdentityUser<Guid>
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public DateTime? UpdatedAt { get; set; }
+
+    public EntityStatus EntityStatus { get; set; } = EntityStatus.ACTIVE;
 }

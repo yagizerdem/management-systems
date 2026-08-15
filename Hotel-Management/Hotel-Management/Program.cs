@@ -1,8 +1,14 @@
 using DAL.Context;
 using Entity.Identity;
+using Hotel_Management;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Server.Kestrel.Transport.NamedPipes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,10 +28,30 @@ builder.Services.AddDbContextPool<HotelManagementContext>(options =>
 
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<HotelManagementContext>()
+    .AddSignInManager()
+    .AddUserManager<UserManager<AppUser>>()
+    .AddRoleManager<RoleManager<IdentityRole<Guid>>>()
     .AddDefaultTokenProviders();
 
 
 builder.Services.AddAuthorization();
+
+IConfigurationSection jwtSection = builder.Configuration.GetSection("Jwt");
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(jwtOptions =>
+{
+    jwtOptions.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSection["Issuer"],
+        ValidAudience = jwtSection["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSection["Key"]!))
+    };
+});
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -48,12 +74,20 @@ builder.Services.Configure<IdentityOptions>(options =>
     "çÇğĞıİöÖşŞüÜ" +
     "0123456789" +
     "-._@+!";
-    options.User.RequireUniqueEmail = false;
+    options.User.RequireUniqueEmail = true;
 });
 
 
 
 var app = builder.Build();
+
+// seed roles
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+    await RoleSeeder.SeedRolesAsync(roleManager);
+}
 
 
 // Configure the HTTP request pipeline.
