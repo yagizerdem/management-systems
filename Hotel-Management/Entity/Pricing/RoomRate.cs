@@ -1,13 +1,11 @@
-using BilgeHotel.Domain.Rooms;
-using System.ComponentModel.DataAnnotations;
+using Entity.Rooms;
+using Entity.Base;
+using Entity.Pricing;
 
 namespace BilgeHotel.Domain.Pricing;
 
-public class RoomRate
+public class RoomRate : BaseEntity
 {
-    [Key]
-    public Guid Id { get; set; }
-
     public int RoomTypeId { get; set; }
     public RoomType RoomType { get; set; } = null!;
 

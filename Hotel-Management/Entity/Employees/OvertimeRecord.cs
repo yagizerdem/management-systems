@@ -1,12 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using Entity.Base;
 
-namespace BilgeHotel.Domain.Employees;
+namespace Entity.Employees;
 
-public class OvertimeRecord
+public class OvertimeRecord : BaseEntity
 {
-    [Key]
-    public Guid Id { get; set; }
-
     public int EmployeeId { get; set; }
     public Employee Employee { get; set; } = null!;
 

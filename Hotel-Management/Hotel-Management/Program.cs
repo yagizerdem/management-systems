@@ -1,4 +1,6 @@
 using DAL.Context;
+using Entity.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -11,24 +13,44 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 
-if (builder.Environment.IsDevelopment())
-{
-    var conString = builder.Configuration.GetConnectionString("HotelManagementDatabase") ??
-     throw new InvalidOperationException("Connection string 'HotelManagementDatabase'" +
-    " not found.");
-
-    builder.Services.AddDbContextPool<HotelManagementContext>(options =>
-        options.UseSqlServer(conString));
-}
-else
-{
-    var conString = builder.Configuration.GetConnectionString("HotelManagementDatabase") ??
+var conString = builder.Configuration.GetConnectionString("HotelManagementDatabase") ??
  throw new InvalidOperationException("Connection string 'HotelManagementDatabase'" +
 " not found.");
 
-    builder.Services.AddDbContextPool<HotelManagementContext>(options =>
-        options.UseSqlServer(conString));
-}
+builder.Services.AddDbContextPool<HotelManagementContext>(options =>
+    options.UseSqlServer(conString));
+
+builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<HotelManagementContext>()
+    .AddDefaultTokenProviders();
+
+
+builder.Services.AddAuthorization();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings.
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+
+    // Lockout settings.
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // User settings.
+    options.User.AllowedUserNameCharacters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+    "çÇğĞıİöÖşŞüÜ" +
+    "0123456789" +
+    "-._@+!";
+    options.User.RequireUniqueEmail = false;
+});
+
 
 
 var app = builder.Build();
@@ -42,6 +64,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

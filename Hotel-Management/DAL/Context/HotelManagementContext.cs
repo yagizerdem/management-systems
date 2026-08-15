@@ -1,13 +1,17 @@
-﻿using BilgeHotel.Domain.Customers;
-using BilgeHotel.Domain.Employees;
-using BilgeHotel.Domain.Pricing;
-using BilgeHotel.Domain.Reservations;
-using BilgeHotel.Domain.Rooms;
+﻿using BilgeHotel.Domain.Pricing;
+using Entity.Customers;
+using Entity.Employees;
+using Entity.Identity;
+using Entity.Pricing;
+using Entity.Reservations;
+using Entity.Rooms;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Context
 {
-    public sealed class HotelManagementContext : DbContext
+    public sealed class HotelManagementContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     {
 
         public HotelManagementContext(DbContextOptions<HotelManagementContext> options) : base(options)

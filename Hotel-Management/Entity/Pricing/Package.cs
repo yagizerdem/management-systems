@@ -1,12 +1,10 @@
-using System.ComponentModel.DataAnnotations;
+using BilgeHotel.Domain.Pricing;
+using Entity.Base;
 
-namespace BilgeHotel.Domain.Pricing;
+namespace Entity.Pricing;
 
-public class Package
+public class Package : BaseEntity
 {
-    [Key]
-    public Guid Id { get; set; }
-
     public string Name { get; set; } = null!;
     public string? Description { get; set; }
     public bool IsActive { get; set; } = true;

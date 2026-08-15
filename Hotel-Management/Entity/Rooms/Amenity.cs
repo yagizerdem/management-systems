@@ -1,11 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using Entity.Base;
 
-namespace BilgeHotel.Domain.Rooms;
+namespace Entity.Rooms;
 
-public class Amenity
+public class Amenity : BaseEntity
 {
-    [Key]
-    public Guid Id { get; set; }
 
     public string Name { get; set; } = null!;
 

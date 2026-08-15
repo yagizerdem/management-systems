@@ -1,12 +1,8 @@
-using System.ComponentModel.DataAnnotations;
+namespace Entity.Reservations;
+using Entity.Base;
 
-namespace BilgeHotel.Domain.Reservations;
-
-public class ExtraCharge
+public class ExtraCharge : BaseEntity
 {
-    [Key]
-    public long Id { get; set; }
-
     public long ReservationId { get; set; }
     public Reservation Reservation { get; set; } = null!;
 

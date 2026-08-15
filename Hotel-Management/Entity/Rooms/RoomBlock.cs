@@ -1,12 +1,11 @@
 using Entity.Rooms.@enum;
 using System.ComponentModel.DataAnnotations;
+using Entity.Base;
 
-namespace BilgeHotel.Domain.Rooms;
+namespace Entity.Rooms;
 
-public class RoomBlock
+public class RoomBlock : BaseEntity
 {
-    [Key]
-    public Guid Id { get; set; }
 
     public int RoomId { get; set; }
     public Room Room { get; set; } = null!;

@@ -1,3 +1,4 @@
+namespace Entity.Reservations.@enum;
 
 public enum ReservationStatus
 {

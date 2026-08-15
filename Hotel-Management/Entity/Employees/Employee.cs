@@ -1,16 +1,10 @@
-using System.ComponentModel.DataAnnotations;
+using Entity.Employees.@enum;
+using Entity.Identity;
 
-namespace BilgeHotel.Domain.Employees;
+namespace Entity.Employees;
 
-public class Employee
+public class Employee : AppUser
 {
-    [Key]
-    public Guid Id { get; set; }
-
-    public string FirstName { get; set; } = null!;
-    public string LastName { get; set; } = null!;
-
-    public string PhoneNumber { get; set; } = null!;
     public string? Address { get; set; }
 
     public int DepartmentId { get; set; }

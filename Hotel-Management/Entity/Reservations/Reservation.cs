@@ -1,15 +1,14 @@
-using BilgeHotel.Domain.Customers;
-using BilgeHotel.Domain.Pricing;
-using BilgeHotel.Domain.Rooms;
+using Entity.Customers;
+using Entity.Pricing;
+using Entity.Rooms;
 using System.ComponentModel.DataAnnotations;
+using Entity.Base;
+using Entity.Reservations.@enum;
 
-namespace BilgeHotel.Domain.Reservations;
+namespace Entity.Reservations;
 
-public class Reservation
+public class Reservation : BaseEntity
 {
-    [Key]
-    public Guid Id { get; set; }
-
     public string ReservationNumber { get; set; } = null!;
 
     public int CustomerId { get; set; }
@@ -33,7 +32,6 @@ public class Reservation
 
     public string CurrencyCode { get; set; } = "TRY";
 
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? CheckedInAt { get; set; }
     public DateTime? CheckedOutAt { get; set; }
 

@@ -1,12 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using Entity.Base;
 
-namespace BilgeHotel.Domain.Pricing;
+namespace Entity.Pricing;
 
-public class ExchangeRate
+public class ExchangeRate  : BaseEntity
 {
-    [Key]
-    public Guid Id { get; set; }
-
     public string CurrencyCode { get; set; } = null!;
     public decimal BuyingRate { get; set; }
     public decimal SellingRate { get; set; }

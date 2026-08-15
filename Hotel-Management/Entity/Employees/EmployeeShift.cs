@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using Entity.Base;
+using Entity.Employees.@enum;
 
-namespace BilgeHotel.Domain.Employees;
+namespace Entity.Employees;
 
-public class EmployeeShift
+public class EmployeeShift : BaseEntity
 {
-    [Key]
-    public Guid Id { get; set; }
 
     public int EmployeeId { get; set; }
     public Employee Employee { get; set; } = null!;

@@ -1,4 +1,4 @@
-namespace BilgeHotel.Domain.Reservations;
+namespace Entity.Reservations.@enum;
 
 public enum ReservationChannel
 {

@@ -1,4 +1,4 @@
-namespace BilgeHotel.Domain.Employees;
+namespace Entity.Employees.@enum;
 
 public enum SalaryType
 {
