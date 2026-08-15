@@ -89,6 +89,11 @@ using (var scope = app.Services.CreateScope())
     await RoleSeeder.SeedRolesAsync(roleManager);
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    await RoomSeeder.SeedRoomAsync(app.Services);
+}
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

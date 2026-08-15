@@ -110,8 +110,6 @@ namespace Hotel_Management
                 Id = kingSuiteTypeId,
                 Name = "King Suite",
 
-                // Doküman kral dairesinin yatak düzenini söylemiyor.
-                // Bunlar varsayım.
                 Capacity = 2,
                 SingleBedCount = 0,
                 DoubleBedCount = 1,
