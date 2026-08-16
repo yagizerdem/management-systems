@@ -7,4 +7,5 @@
   <Project Path="Entity/Entity.csproj" Id="0248d4a5-c51d-4b58-a184-45a0df823afd" />
   <Project Path="Hotel-Management/Hotel-Management.csproj" />
   <Project Path="IOC/IOC.csproj" Id="df67beb2-9fe1-4be9-b982-ed5f6a7f4dae" />
+  <Project Path="Service/Service.csproj" Id="5b764c2d-3959-4b01-a2cc-3afbd43dc1dd" />
 </Solution>

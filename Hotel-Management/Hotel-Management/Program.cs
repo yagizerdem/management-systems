@@ -1,6 +1,7 @@
 using DAL.Context;
 using Entity.Identity;
 using Hotel_Management;
+using IOC.Container;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Server.Kestrel.Transport.NamedPipes;
@@ -77,7 +78,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = true;
 });
 
-
+ServiceIOC.ServiceConfigure(builder.Services);
 
 var app = builder.Build();
 
@@ -91,7 +92,7 @@ using (var scope = app.Services.CreateScope())
 
 using (var scope = app.Services.CreateScope())
 {
-    await RoomSeeder.SeedRoomAsync(app.Services);
+    await RoomSeeder.SeedRoomAsync(scope.ServiceProvider);
 }
 
 

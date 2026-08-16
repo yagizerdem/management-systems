@@ -13,8 +13,13 @@
         // Authentication / Authorization
         UNAUTHORIZED,
         FORBIDDEN,
-        INVALID_CREDENTIALS,
         TOKEN_EXPIRED,
         INVALID_TOKEN,
+        USER_NOT_FOUND,
+        INVALID_PASSWORD,
+        INVALID_USER_ROLE,
+        USER_REGISTRATION_FAILED,
+        USER_ROLE_ASSIGNMENT_FAILED
+
     }
 }

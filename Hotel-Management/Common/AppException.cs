@@ -4,10 +4,16 @@ namespace Common;
 
 public sealed class AppException : Exception
 {
-    public ErrorCode ErrorCode { get; }
-    public HttpStatusCode StatusCode { get; }
-    public bool IsOperational { get; }
+    public ErrorCode ErrorCode { get; set; }
+    public HttpStatusCode StatusCode { get; set; }
+    public bool IsOperational { get; set; }
     public ErrorDiagnostic? ErrorDiagnostic { get; set; }
+ 
+
+    public AppException(string message)
+    : base(message)
+    {
+    }
 
     public AppException(
         string message,

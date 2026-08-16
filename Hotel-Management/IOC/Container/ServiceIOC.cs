@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Service;
 
 namespace IOC.Container
 {
@@ -6,9 +7,7 @@ namespace IOC.Container
     {
         public static void ServiceConfigure(IServiceCollection services)
         {
-
-
+            services.AddScoped<RoomService>();
         }
-
     }
 }
