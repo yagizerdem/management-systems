@@ -2,6 +2,9 @@
 {
     public enum ErrorCode
     {
+        // Programmatic Errors
+        INVALID_CONFIGURATION,
+
         // General
         UNKNOWN_ERROR,
         INTERNAL_SERVER_ERROR,

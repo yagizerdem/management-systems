@@ -31,16 +31,28 @@ builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<HotelManagementContext>()
     .AddSignInManager()
     .AddUserManager<UserManager<AppUser>>()
-    .AddRoleManager<RoleManager<IdentityRole<Guid>>>()
-    .AddDefaultTokenProviders();
+    .AddRoleManager<RoleManager<IdentityRole<Guid>>>();
+
 
 
 builder.Services.AddAuthorization();
 
 IConfigurationSection jwtSection = builder.Configuration.GetSection("Jwt");
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(jwtOptions =>
+builder.Services.AddAuthentication(jwtOptions =>
+{
+    // override defulat auth scheme to jwt bearer scheme do not delete this jwtOptions settings
+    jwtOptions.DefaultAuthenticateScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+
+    jwtOptions.DefaultChallengeScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+
+    jwtOptions.DefaultForbidScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+
+})
+.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtOptions =>
 {
     jwtOptions.TokenValidationParameters = new TokenValidationParameters
     {
@@ -102,7 +114,10 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+if(!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();

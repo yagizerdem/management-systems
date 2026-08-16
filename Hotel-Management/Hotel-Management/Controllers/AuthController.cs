@@ -4,6 +4,7 @@ using Common.DTO;
 using DAL.Context;
 using Entity.Base;
 using Entity.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
@@ -163,31 +164,26 @@ public class AuthController : ControllerBase
             };
         }
 
-        IList<string> role = await _userManager.GetRolesAsync(user);
+        IList<string> roles = await _userManager.GetRolesAsync(user);
 
-        if(role == null || role.Count != 1)
-        {
-            throw new AppException("User must have exactly one assigned role")
-            {
-                ErrorCode = ErrorCode.INVALID_USER_ROLE,
-                StatusCode = HttpStatusCode.Unauthorized,
-                ErrorDiagnostic = new ErrorDiagnostic
-                {
-                    ComponentName = nameof(AuthController),
-                    MethodName = nameof(Login),
-                }
-            };
-        }
 
         // generate jwt 
         var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Email, user.Email!),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email!),
                     new Claim(ClaimTypes.Name, user.FirstName),
-                    new Claim(ClaimTypes.Surname, user.LastName),
-                    new Claim("id", user.Id.ToString()),
+                    new Claim(ClaimTypes.Surname, user.LastName)
                 };
+
+
+        foreach (var role in roles)
+        {
+            authClaims.Add(new Claim(ClaimTypes.Role, role));
+        }
 
         JwtSecurityToken token = GetToken(authClaims);
 
@@ -215,22 +211,93 @@ public class AuthController : ControllerBase
         return Ok(ApiResponse<string>.Ok("User is logged in"));
     }
 
+
+    [HttpGet("has-admin-role")]
+    [Authorize(Roles = Roles.Admin)]
+    public IActionResult IsAdmin()
+    {
+        return Ok(ApiResponse<string>.Ok("User has admin role"));
+    }
+
+    [HttpGet("has-manager-role")]
+    [Authorize(Roles = Roles.Manager)]
+    public IActionResult IsManager()
+    {
+        return Ok(ApiResponse<string>.Ok("User has manager role"));
+    }
+
+    [HttpGet("has-reception-chief-role")]
+    [Authorize(Roles = Roles.ReceptionChief)]
+    public IActionResult IsReceptionChief()
+    {
+        return Ok(ApiResponse<string>.Ok("User has reception chief role"));
+    }
+
+    [HttpGet("has-receptionist-role")]
+    [Authorize(Roles = Roles.Receptionist)]
+    public IActionResult IsReceptionist()
+    {
+        return Ok(ApiResponse<string>.Ok("User has receptionist role"));
+    }
+
+    [HttpGet("has-it-role")]
+    [Authorize(Roles = Roles.IT)]
+    public IActionResult IsIT()
+    {
+        return Ok(ApiResponse<string>.Ok("User has IT role"));
+    }
+
+    [HttpGet("has-customer-role")]
+    [Authorize(Roles = Roles.Customer)]
+    public IActionResult IsCustomer()
+    {
+        return Ok(ApiResponse<string>.Ok("User has customer role"));
+    }
+
     private JwtSecurityToken GetToken(List<Claim> authClaims)
     {
         IConfigurationSection section = _config.GetSection("Jwt");
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(section["Key"]));
+        string accessTokenMinutes = section["AccessTokenMinutes"] ??
+            throw new AppException("AccessTokenMinutes is not configured")
+            {
+                ErrorCode = ErrorCode.INVALID_CONFIGURATION,
+                StatusCode = HttpStatusCode.InternalServerError,
+                ErrorDiagnostic = new ErrorDiagnostic
+                {
+                    ComponentName = nameof(AuthController),
+                    MethodName = nameof(Login),
+                },
+                IsOperational = false
+            };
+
+        int minutes = int.Parse(accessTokenMinutes);
+
+        string jwtKey = section["Key"] ??
+            throw new AppException("Jwt Key is not configured")
+            {
+                ErrorCode = ErrorCode.INVALID_CONFIGURATION,
+                StatusCode = HttpStatusCode.InternalServerError,
+                ErrorDiagnostic = new ErrorDiagnostic
+                {
+                    ComponentName = nameof(AuthController),
+                    MethodName = nameof(Login),
+                },
+                IsOperational = false
+            };
+
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         return new JwtSecurityToken(
             issuer: section["Issuer"],
             audience: section["Audience"],
-            expires: DateTime.Now.AddMinutes(15),
+            expires: DateTime.Now.AddMinutes(minutes),
             claims: authClaims,
             signingCredentials: creds
         );
     }
-
 
 
 }
