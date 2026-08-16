@@ -9,6 +9,8 @@ namespace Common
         public T? Data { get; set; }
         public HttpStatusCode StatusCode { get; set; }
 
+        public ApiResponse() { }
+
         public ApiResponse(
             bool success,
             string message,

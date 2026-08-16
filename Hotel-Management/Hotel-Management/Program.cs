@@ -195,6 +195,9 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 ServiceIOC.ServiceConfigure(builder.Services);
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
 
 // seed roles
@@ -221,10 +224,14 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-if(!app.Environment.IsDevelopment())
+// Use the global exception handler
+app.UseExceptionHandler();
+
+if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
+
 
 app.UseAuthentication();
 app.UseAuthorization();
