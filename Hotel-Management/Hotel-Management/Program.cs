@@ -1,6 +1,7 @@
 using DAL.Context;
 using Entity.Identity;
 using Hotel_Management;
+using IOC.Container;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Server.Kestrel.Transport.NamedPipes;
@@ -30,16 +31,28 @@ builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<HotelManagementContext>()
     .AddSignInManager()
     .AddUserManager<UserManager<AppUser>>()
-    .AddRoleManager<RoleManager<IdentityRole<Guid>>>()
-    .AddDefaultTokenProviders();
+    .AddRoleManager<RoleManager<IdentityRole<Guid>>>();
+
 
 
 builder.Services.AddAuthorization();
 
 IConfigurationSection jwtSection = builder.Configuration.GetSection("Jwt");
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(jwtOptions =>
+builder.Services.AddAuthentication(jwtOptions =>
+{
+    // override defulat auth scheme to jwt bearer scheme do not delete this jwtOptions settings
+    jwtOptions.DefaultAuthenticateScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+
+    jwtOptions.DefaultChallengeScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+
+    jwtOptions.DefaultForbidScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+
+})
+.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtOptions =>
 {
     jwtOptions.TokenValidationParameters = new TokenValidationParameters
     {
@@ -77,7 +90,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = true;
 });
 
-
+ServiceIOC.ServiceConfigure(builder.Services);
 
 var app = builder.Build();
 
@@ -91,9 +104,13 @@ using (var scope = app.Services.CreateScope())
 
 using (var scope = app.Services.CreateScope())
 {
-    await RoomSeeder.SeedRoomAsync(app.Services);
+    await RoomSeeder.SeedRoomAsync(scope.ServiceProvider);
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    await AdminSeeder.SeedAdminAsync(scope.ServiceProvider);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -101,7 +118,10 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+if(!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();
