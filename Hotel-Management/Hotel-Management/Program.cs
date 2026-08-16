@@ -9,9 +9,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
 
 // Add services to the container.
 
@@ -64,6 +67,106 @@ builder.Services.AddAuthentication(jwtOptions =>
         ValidAudience = jwtSection["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSection["Key"]!))
     };
+
+    jwtOptions.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var logger = context.HttpContext.RequestServices
+                .GetRequiredService<ILogger<Program>>();
+
+            logger.LogDebug(
+                "JWT message received. Path: {Path}, Authorization header exists: {HasAuthHeader}",
+                context.HttpContext.Request.Path,
+                context.HttpContext.Request.Headers.ContainsKey("Authorization")
+            );
+
+            return Task.CompletedTask;
+        },
+
+        OnTokenValidated = context =>
+        {
+            var logger = context.HttpContext.RequestServices
+                .GetRequiredService<ILogger<Program>>();
+
+            var userId = context.Principal?
+                .FindFirst(ClaimTypes.NameIdentifier)?
+                .Value;
+
+            var email = context.Principal?
+                .FindFirst(ClaimTypes.Email)?
+                .Value;
+
+            var roles = context.Principal?
+                .FindAll(ClaimTypes.Role)
+                .Select(x => x.Value)
+                .ToArray();
+
+            logger.LogDebug(
+                "JWT validated successfully. UserId: {UserId}, Email: {Email}, Roles: {Roles}",
+                userId,
+                email,
+                roles
+            );
+
+            foreach (var claim in context.Principal?.Claims ?? [])
+            {
+                logger.LogDebug(
+                    "JWT claim. Type: {ClaimType}, Value: {ClaimValue}",
+                    claim.Type,
+                    claim.Value
+                );
+            }
+
+            return Task.CompletedTask;
+        },
+
+        OnAuthenticationFailed = context =>
+        {
+            var logger = context.HttpContext.RequestServices
+                .GetRequiredService<ILogger<Program>>();
+
+            logger.LogWarning(
+                context.Exception,
+                "JWT authentication failed. Path: {Path}, ExceptionType: {ExceptionType}, Message: {Message}",
+                context.HttpContext.Request.Path,
+                context.Exception.GetType().Name,
+                context.Exception.Message
+            );
+
+            return Task.CompletedTask;
+        },
+
+        OnChallenge = context =>
+        {
+            var logger = context.HttpContext.RequestServices
+                .GetRequiredService<ILogger<Program>>();
+
+            logger.LogDebug(
+                "JWT challenge triggered. Path: {Path}, Error: {Error}, Description: {Description}",
+                context.HttpContext.Request.Path,
+                context.Error,
+                context.ErrorDescription
+            );
+
+            return Task.CompletedTask;
+        },
+
+        OnForbidden = context =>
+        {
+            var logger = context.HttpContext.RequestServices
+                .GetRequiredService<ILogger<Program>>();
+
+            logger.LogWarning(
+                "JWT authorization forbidden. Path: {Path}, User: {User}",
+                context.HttpContext.Request.Path,
+                context.Principal?.Identity?.Name
+            );
+
+            return Task.CompletedTask;
+        }
+    };
+
 });
 
 builder.Services.Configure<IdentityOptions>(options =>
