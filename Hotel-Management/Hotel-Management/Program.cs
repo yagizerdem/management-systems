@@ -107,6 +107,10 @@ using (var scope = app.Services.CreateScope())
     await RoomSeeder.SeedRoomAsync(scope.ServiceProvider);
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    await AdminSeeder.SeedAdminAsync(scope.ServiceProvider);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
